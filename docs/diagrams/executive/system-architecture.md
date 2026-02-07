@@ -36,7 +36,7 @@ graph TB
 
         subgraph Observability["Observability Layer"]
             AI["📊 Application<br/>Insights<br/>Metrics/Logs/Traces"]
-            ACR["📦 Container<br/>Registry<br/>Docker Images")]
+            ACR["📦 Container<br/>Registry<br/>Docker Images"]
         end
     end
 
