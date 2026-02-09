@@ -1,0 +1,99 @@
+{
+  "name": "symbiont-x-frontend",
+  "version": "1.0.0",
+  "description": "SYMBIONT-X Frontend - Autonomous Multi-Agent DevSecOps Platform Dashboard",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,md}\"",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "prepare": "cd .. && husky install src/frontend/.husky"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.46.0",
+    "@fluentui/react-icons": "^2.0.239",
+    "@microsoft/applicationinsights-react-js": "^17.1.1",
+    "@microsoft/applicationinsights-web": "^3.1.1",
+    "@tanstack/react-query": "^5.20.1",
+    "@tanstack/react-table": "^8.11.8",
+    "axios": "^1.6.7",
+    "date-fns": "^3.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.12",
+    "react-router-dom": "^6.22.0",
+    "recharts": "^2.12.0",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.41.2",
+    "@tanstack/react-query-devtools": "^5.20.1",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^20.11.17",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "@vitest/coverage-v8": "^1.2.2",
+    "@vitest/ui": "^1.2.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "happy-dom": "^13.3.8",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.1",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.0",
+    "vitest": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,md}": [
+      "prettier --write"
+    ]
+  },
+  "keywords": [
+    "devsecops",
+    "security",
+    "ai",
+    "multi-agent",
+    "microsoft-foundry",
+    "azure",
+    "github-copilot",
+    "vulnerability-management",
+    "autonomous-remediation"
+  ],
+  "author": "SYMBIONT-X",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SYMBIONT-X/SYMBIONT-X.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SYMBIONT-X/SYMBIONT-X/issues"
+  },
+  "homepage": "https://github.com/SYMBIONT-X/SYMBIONT-X#readme"
+}
