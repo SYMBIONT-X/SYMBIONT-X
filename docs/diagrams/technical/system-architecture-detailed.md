@@ -136,6 +136,7 @@ graph TB
 
 ### Virtual Network Configuration
 ```
+
 vnet-symbiontx-prod (10.0.0.0/16)
 ├── snet-compute (10.0.1.0/24)
 │   ├── Container Apps Environment
@@ -518,5 +519,3 @@ Version: 1.0
 Date: February 2026
 For: Microsoft AI Dev Days Hackathon - ARCHITECTURE.md
 Project: SYMBIONT-X
-</parameter>
-</invoke>
