@@ -20,7 +20,7 @@ pytest-env==1.1.3                     # Environment variables for tests
 # HTTP Testing
 pytest-httpx==0.28.0                  # Mock HTTPX requests
 responses==0.24.1                     # Mock requests library
-httpretty==1.1.7                      # HTTP mock
+httpretty==1.1.4                      # HTTP mock
 # ============================================================================
 # CODE QUALITY & LINTING
 # ============================================================================
