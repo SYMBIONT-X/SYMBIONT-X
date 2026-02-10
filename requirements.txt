@@ -45,7 +45,7 @@ python-gitlab==4.4.0          # GitLab API (if needed)
 # ============================================================================
 # HTTP CLIENTS & NETWORKING
 # ============================================================================
-httpx==0.26.0                 # Modern HTTP client
+httpx==0.27.0                 # Modern HTTP client
 requests==2.31.0              # HTTP library
 websockets==12.0              # WebSocket support
 aiohttp==3.9.3                # Async HTTP client
