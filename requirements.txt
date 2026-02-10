@@ -121,7 +121,7 @@ detect-secrets==1.4.0         # Secret detection tool
 # ============================================================================
 # PINNED TRANSITIVE DEPENDENCIES (Security)
 # ============================================================================
-These are pinned to specific versions for security
+# These are pinned to specific versions for security
 certifi>=2023.7.22            # SSL certificates
 urllib3>=2.0.7                # HTTP library (security updates)
 idna>=3.6                     # Internationalized domain names
