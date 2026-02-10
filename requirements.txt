@@ -39,7 +39,7 @@ GitPython==3.1.41             # Git operations
 # ============================================================================
 # SECURITY SCANNING TOOLS
 # ============================================================================
-safety==3.0.1                 # Python dependency vulnerability scanner
+safety==3.3.1                 # Python dependency vulnerability scanner
 bandit==1.7.6                 # Python security linter
 python-gitlab==4.4.0          # GitLab API (if needed)
 # ============================================================================
