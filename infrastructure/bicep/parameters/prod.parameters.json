@@ -1,0 +1,23 @@
+
+{
+
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+
+  "contentVersion": "1.0.0.0",
+
+  "parameters": {
+
+    "environment": { "value": "prod" },
+
+    "location": { "value": "eastus" },
+
+    "projectName": { "value": "symbiontx" },
+
+    "adminObjectId": { "value": "05173fa6-59bc-447f-80db-19110ff56f77" },
+
+    "githubRepoUrl": { "value": "https://github.com/SYMBIONT-X/SYMBIONT-X" }
+
+  }
+
+}
+
