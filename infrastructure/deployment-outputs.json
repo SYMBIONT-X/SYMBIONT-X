@@ -1,0 +1,8 @@
+{
+  "resourceGroup": { "value": "rg-symbiontx-dev" },
+  "location": { "value": "eastus" },
+  "cosmosAccount": { "value": "cosmos-symbiontx-dev-dlkndf" },
+  "acrName": { "value": "acrsymbiontxdevdlkndf" },
+  "keyVaultName": { "value": "kv-symbiontx-devdlkndf" },
+  "serviceBusNamespace": { "value": "sb-symbiontx-dev-dlkndf" }
+}
