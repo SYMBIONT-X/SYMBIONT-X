@@ -1,0 +1,222 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run every Sunday at 00:00 UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  # ============================================================================
+  # Python Dependency Scanning
+  # ============================================================================
+  python-dependencies:
+    name: Python Dependencies (Safety)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Safety
+        run: pip install safety
+      - name: Run Safety check
+        run: |
+          safety check --file=requirements.txt --output=json > safety-report.json || true
+          safety check --file=requirements.txt || true
+      - name: Upload Safety report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: safety-report
+          path: safety-report.json
+
+  # ============================================================================
+  # Python Code Security (Bandit)
+  # ============================================================================
+  python-code-security:
+    name: Python Code Security (Bandit)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Bandit
+        run: pip install bandit[toml]
+      - name: Run Bandit
+        run: |
+          bandit -r src/ -f json -o bandit-report.json || true
+          bandit -r src/ -ll || true
+      - name: Upload Bandit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bandit-report
+          path: bandit-report.json
+
+  # ============================================================================
+  # Secrets Scanning (TruffleHog)
+  # ============================================================================
+  secrets-scan:
+    name: Secrets Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: TruffleHog OSS
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+
+  # ============================================================================
+  # Container Image Scanning (Trivy)
+  # ============================================================================
+  container-scan:
+    name: Container Scanning (Trivy)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        agent: [security-scanner, risk-assessment, orchestrator]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: |
+          docker build -t symbiontx/${{ matrix.agent }}:scan ./src/agents/${{ matrix.agent }}
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'symbiontx/${{ matrix.agent }}:scan'
+          format: 'sarif'
+          output: 'trivy-${{ matrix.agent }}.sarif'
+          severity: 'CRITICAL,HIGH'
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-${{ matrix.agent }}.sarif'
+          category: 'trivy-${{ matrix.agent }}'
+      - name: Run Trivy (table output)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'symbiontx/${{ matrix.agent }}:scan'
+          format: 'table'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+
+  # ============================================================================
+  # npm Audit (Frontend)
+  # ============================================================================
+  npm-audit:
+    name: npm Audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run npm audit
+        run: |
+          npm audit --json > npm-audit.json || true
+          npm audit || true
+      - name: Upload npm audit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: npm-audit-report
+          path: src/frontend/npm-audit.json
+
+  # ============================================================================
+  # SAST - CodeQL Analysis
+  # ============================================================================
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['python', 'javascript']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: '/language:${{ matrix.language }}'
+
+  # ============================================================================
+  # Infrastructure Scanning (Checkov)
+  # ============================================================================
+  infrastructure-scan:
+    name: Infrastructure Security (Checkov)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: infrastructure/
+          framework: bicep
+          output_format: sarif
+          output_file_path: checkov.sarif
+          soft_fail: true
+      - name: Upload Checkov results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: checkov.sarif
+          category: 'checkov'
+
+  # ============================================================================
+  # Summary Report
+  # ============================================================================
+  security-summary:
+    name: Security Summary
+    runs-on: ubuntu-latest
+    needs: [python-dependencies, python-code-security, secrets-scan, container-scan, npm-audit, codeql, infrastructure-scan]
+    if: always()
+    steps:
+      - name: Security Scan Summary
+        run: |
+          echo "## 🔒 Security Scan Summary"
+          echo ""
+          echo "| Check | Status |"
+          echo "|-------|--------|"
+          echo "| Python Dependencies (Safety) | ${{ needs.python-dependencies.result }} |"
+          echo "| Python Code Security (Bandit) | ${{ needs.python-code-security.result }} |"
+          echo "| Secrets Scanning (TruffleHog) | ${{ needs.secrets-scan.result }} |"
+          echo "| Container Scanning (Trivy) | ${{ needs.container-scan.result }} |"
+          echo "| npm Audit | ${{ needs.npm-audit.result }} |"
+          echo "| SAST (CodeQL) | ${{ needs.codeql.result }} |"
+          echo "| Infrastructure (Checkov) | ${{ needs.infrastructure-scan.result }} |"
