@@ -1,0 +1,185 @@
+name: Deploy to Dev
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  RESOURCE_GROUP: rg-symbiontx-dev
+  CONTAINER_REGISTRY: ${{ secrets.ACR_NAME }}
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '20'
+
+jobs:
+  # ============================================================================
+  # Build & Push Docker Images
+  # ============================================================================
+  build-and-push:
+    name: Build & Push Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      matrix:
+        agent: [security-scanner, risk-assessment, orchestrator]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Login to Azure Container Registry
+        run: |
+          az acr login --name ${{ secrets.ACR_NAME }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/agents/${{ matrix.agent }}
+          push: true
+          tags: |
+            ${{ secrets.ACR_NAME }}.azurecr.io/${{ matrix.agent }}:latest
+            ${{ secrets.ACR_NAME }}.azurecr.io/${{ matrix.agent }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ============================================================================
+  # Deploy Container Apps
+  # ============================================================================
+  deploy-agents:
+    name: Deploy Agents
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      matrix:
+        agent: [security-scanner, risk-assessment, orchestrator]
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Update Container App
+        run: |
+          az containerapp update \
+            --name ${{ matrix.agent }}-agent \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --image ${{ secrets.ACR_NAME }}.azurecr.io/${{ matrix.agent }}:${{ github.sha }}
+
+  # ============================================================================
+  # Deploy Azure Functions
+  # ============================================================================
+  deploy-functions:
+    name: Deploy Functions
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          cd src/backend/functions
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy to Azure Functions
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ secrets.FUNCTION_APP_NAME }}
+          package: ./src/backend/functions
+
+  # ============================================================================
+  # Deploy Frontend
+  # ============================================================================
+  deploy-frontend:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    defaults:
+      run:
+        working-directory: src/frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: src/frontend/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ secrets.DEV_API_URL }}
+          VITE_AZURE_AD_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      - name: Deploy to Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DEV }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/src/frontend"
+          output_location: "dist"
+
+  # ============================================================================
+  # Smoke Tests
+  # ============================================================================
+  smoke-tests:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    needs: [deploy-agents, deploy-functions, deploy-frontend]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Test Orchestrator Health
+        run: |
+          curl -f ${{ secrets.DEV_ORCHESTRATOR_URL }}/health || exit 1
+      - name: Test Security Scanner Health
+        run: |
+          curl -f ${{ secrets.DEV_SCANNER_URL }}/health || exit 1
+      - name: Test Frontend
+        run: |
+          curl -f ${{ secrets.DEV_FRONTEND_URL }} || exit 1
+
+  # ============================================================================
+  # Notification
+  # ============================================================================
+  notify:
+    name: Notify Deployment
+    runs-on: ubuntu-latest
+    needs: smoke-tests
+    if: always()
+    steps:
+      - name: Deployment Status
+        run: |
+          if [ "${{ needs.smoke-tests.result }}" == "success" ]; then
+            echo "✅ Deployment to DEV successful!"
+          else
+            echo "❌ Deployment to DEV failed!"
+            exit 1
+          fi
