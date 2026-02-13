@@ -3,6 +3,16 @@
 ### Autonomous Multi-Agent DevSecOps Platform
 **Reduce vulnerability remediation from 30-60 days to 5 minutes**
 
+<div align="center">
+  <img src="docs/assets/logo.png" alt="SYMBIONT-X Logo" width="200">
+  
+  # SYMBIONT-X
+  
+  ### Autonomous Multi-Agent DevSecOps Platform
+  
+  **Reduce vulnerability remediation from 30-60 days to 5 minutes**
+</div>
+
 <!-- Badges -->
 <p align="center">
   <a href="https://github.com/SYMBIONT-X/SYMBIONT-X/actions/workflows/ci-build.yml">
