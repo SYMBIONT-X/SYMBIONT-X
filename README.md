@@ -3,10 +3,27 @@
 ### Autonomous Multi-Agent DevSecOps Platform
 **Reduce vulnerability remediation from 30-60 days to 5 minutes**
 
-[![Microsoft AI Dev Days 2026](https://img.shields.io/badge/Microsoft-AI%20Dev%20Days%202026-0078D4?style=for-the-badge&logo=microsoft)](https://github.com/Azure/AI-Dev-Days-Hackathon)
-[![Built with Microsoft Foundry](https://img.shields.io/badge/Built%20with-Microsoft%20Foundry-7E57C2?style=for-the-badge)](https://learn.microsoft.com/foundry)
-[![Powered by Azure](https://img.shields.io/badge/Powered%20by-Azure-0078D4?style=for-the-badge&logo=microsoftazure)](https://azure.microsoft.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+<!-- Badges -->
+<p align="center">
+  <a href="https://github.com/SYMBIONT-X/SYMBIONT-X/actions/workflows/ci-build.yml">
+    <img src="https://github.com/SYMBIONT-X/SYMBIONT-X/actions/workflows/ci-build.yml/badge.svg" alt="CI Build">
+  </a>
+  <a href="https://github.com/SYMBIONT-X/SYMBIONT-X/actions/workflows/security-scan.yml">
+    <img src="https://github.com/SYMBIONT-X/SYMBIONT-X/actions/workflows/security-scan.yml/badge.svg" alt="Security Scan">
+  </a>
+  <a href="https://github.com/Azure/AI-Dev-Days-Hackathon">
+    <img src="https://img.shields.io/badge/Microsoft-AI%20Dev%20Days%202026-0078D4?style=for-the-badge&logo=microsoft" alt="Microsoft AI Dev Days 2026">
+  </a>
+  <a href="https://learn.microsoft.com/foundry">
+    <img src="https://img.shields.io/badge/Built%20with-Microsoft%20Foundry-7E57C2?style=for-the-badge" alt="Built with Microsoft Foundry">
+  </a>
+  <a href="https://azure.microsoft.com">
+    <img src="https://img.shields.io/badge/Powered%20by-Azure-0078D4?style=for-the-badge&logo=microsoftazure" alt="Powered by Azure">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License: MIT">
+  </a>
+</p>
 
 ---
 
