@@ -77,7 +77,7 @@ An **autonomous multi-agent DevSecOps platform** that:
 
 ## 🏗️ System Architecture
 
-![SYMBIONT-X Architecture](docs/diagrams/exports/system-architecture-executive.png)
+![SYMBIONT-X Architecture](docs/diagrams/exports/system-architecture-executive-1.png)
 
 *High-level system architecture showing multi-agent orchestration via A2A protocol*
 
