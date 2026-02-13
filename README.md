@@ -39,7 +39,13 @@
 
 ## 🎥 Demo Video
 
+<div align="center">
+  <a href="docs/demo-video.md">
+    <img src="docs/assets/demo-placeholder.png" alt="Demo Coming Soon" width="600">
+  </a>
+  
 > **[▶️ Watch 2-Minute Demo Video](docs/demo-video.md)** *(Coming Soon)*
+</div>
 
 ---
 
