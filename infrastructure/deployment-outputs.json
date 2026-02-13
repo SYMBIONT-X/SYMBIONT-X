@@ -1,8 +1,10 @@
 {
-  "resourceGroup": { "value": "rg-symbiontx-dev" },
-  "location": { "value": "eastus" },
-  "cosmosAccount": { "value": "cosmos-symbiontx-dev-dlkndf" },
-  "acrName": { "value": "acrsymbiontxdevdlkndf" },
-  "keyVaultName": { "value": "kv-symbiontx-devdlkndf" },
-  "serviceBusNamespace": { "value": "sb-symbiontx-dev-dlkndf" }
+  "appInsightsConnectionString": "InstrumentationKey=d7dbbb5c-6126-42ce-bec1-2417081aecbf;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=9ad960fe-17fd-4646-bb67-0fa937c5193c",
+  "containerRegistryLoginServer": "acrsymbiontxdevdlkndf.azurecr.io",
+  "cosmosEndpoint": "https://cosmos-symbiontx-dev-dlkndf.documents.azure.com:443/",
+  "keyVaultUri": "https://kv-symbiontx-devdlkndf.vault.azure.net/",
+  "location": "eastus",
+  "managedIdentityClientId": "d09d9dad-ea60-47cb-ae06-c79dde765f2f",
+  "resourceGroupName": "rg-symbiontx-dev",
+  "staticWebAppUrl": "https://green-island-0b5c1ad0f.2.azurestaticapps.net"
 }
