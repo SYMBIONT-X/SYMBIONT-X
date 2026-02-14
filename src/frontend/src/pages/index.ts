@@ -1,0 +1,4 @@
+export { DashboardPage } from './DashboardPage';
+export { VulnerabilitiesPage } from './VulnerabilitiesPage';
+export { AgentsPage } from './AgentsPage';
+export { SettingsPage } from './SettingsPage';
