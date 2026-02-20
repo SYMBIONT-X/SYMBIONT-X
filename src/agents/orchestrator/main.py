@@ -389,3 +389,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Import and include monitoring router
+from monitoring import router as monitoring_router
+app.include_router(monitoring_router)

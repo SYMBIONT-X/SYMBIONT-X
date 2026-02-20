@@ -3,3 +3,4 @@ export { orchestratorService } from './orchestrator.service';
 export { scannerService } from './scanner.service';
 export { assessmentService } from './assessment.service';
 export { remediationService } from './remediation.service';
+export { monitoringService } from './monitoring.service';
