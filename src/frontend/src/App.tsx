@@ -5,6 +5,7 @@ import { VulnerabilitiesPage } from '@pages/VulnerabilitiesPage';
 import { AgentsPage } from '@pages/AgentsPage';
 import { SettingsPage } from '@pages/SettingsPage';
 import { MonitoringPage } from '@pages/MonitoringPage';
+import { ApprovalsPage } from '@pages/ApprovalsPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="vulnerabilities" element={<VulnerabilitiesPage />} />
         <Route path="agents" element={<AgentsPage />} />
         <Route path="monitoring" element={<MonitoringPage />} />
+        <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
     </Routes>

@@ -394,3 +394,8 @@ if __name__ == "__main__":
 # Import and include monitoring router
 from monitoring import router as monitoring_router
 app.include_router(monitoring_router)
+
+
+# Import and include HITL router
+from hitl_api import router as hitl_router
+app.include_router(hitl_router)
