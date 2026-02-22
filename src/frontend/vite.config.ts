@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import path from 'path';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,16 +13,20 @@ export default defineConfig({
       '@services': path.resolve(__dirname, './src/services'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
       '@types': path.resolve(__dirname, './src/types'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@assets': path.resolve(__dirname, './src/assets'),
     },
   },
-  server: {
-    port: 3000,
-    open: true,
-  },
   build: {
-    outDir: 'dist',
-    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-charts': ['recharts'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 800,
   },
-});
+  server: {
+    port: 5173,
+  },
+})
