@@ -332,7 +332,7 @@ async def get_workflow_timeline(workflow_id: str):
 @router.get("/audit/export")
 async def export_audit_log(
     workflow_id: Optional[str] = None,
-    format: str = Query("json", regex="^(json|csv)$"),
+    format: str = Query("json", pattern="^(json|csv)$"),
 ):
     """Export audit log entries."""
     
