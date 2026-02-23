@@ -18,6 +18,10 @@ import {
   SettingsFilled,
   ChevronLeftRegular,
   ChevronRightRegular,
+  CheckmarkCircleRegular,
+  CheckmarkCircleFilled,
+  ChartMultipleRegular,
+  ChartMultipleFilled,
 } from '@fluentui/react-icons';
 
 const useStyles = makeStyles({
@@ -115,6 +119,18 @@ const navItems: NavItem[] = [
     label: 'Vulnerabilities',
     icon: <ShieldErrorRegular />,
     iconActive: <ShieldErrorFilled />,
+  },
+  {
+    path: '/approvals',
+    label: 'Approvals',
+    icon: <CheckmarkCircleRegular />,
+    iconActive: <CheckmarkCircleFilled />,
+  },
+  {
+    path: '/monitoring',
+    label: 'Monitoring',
+    icon: <ChartMultipleRegular />,
+    iconActive: <ChartMultipleFilled />,
   },
   {
     path: '/agents',
