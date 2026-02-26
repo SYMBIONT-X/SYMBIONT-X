@@ -45,10 +45,14 @@
   </a>
   
 > **[▶️ Watch 2-Minute Demo Video](docs/demo-video.md)** 
+
+### Quick Preview
+
+<img src="docs/assets/symbiont-demo.gif" alt="SYMBIONT-X Demo" width="700">
+
 </div>
 
 ---
-
 ## 💡 The Problem
 
 Enterprise security teams face a critical crisis:
