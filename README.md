@@ -40,11 +40,11 @@
 ## 🎥 Demo Video
 
 <div align="center">
-  <a href="docs/demo-video.md">
-    <img src="docs/assets/demo-placeholder.png" alt="Demo Coming Soon" width="600">
+  <a href="https://youtu.be/E1VmyBQP7yU">
+    <img src="docs/assets/symbiontx-logo-2.png" alt="SYMBIONT-X Demo Video" width="600">
   </a>
   
-> **[▶️ Watch 2-Minute Demo Video](docs/demo-video.md)** *(Coming Soon)*
+> **[▶️ Watch 2-Minute Demo Video](docs/demo-video.md)** 
 </div>
 
 ---
