@@ -15,7 +15,7 @@
 | Resource | URL |
 |----------|-----|
 | **GitHub Repository** | https://github.com/SYMBIONT-X/SYMBIONT-X |
-| **Demo Video** | [AGREGAR URL DEL VIDEO] |
+| **Demo Video** | https://youtu.be/E1VmyBQP7yU |
 | **Live Demo** | N/A (runs locally) |
 
 ---
