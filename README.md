@@ -526,9 +526,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🎖️ Hackathon Submission
 
-**Submitted:** March 15, 2026 *(pending)*
-**Demo Video:** [Link] *(coming soon)*
-**Live Demo:** [Link] *(coming soon)*
+**Submitted:** March 15, 2026 ✅
+**Demo Video:** [Watch on YouTube](https://youtu.be/E1VmyBQP7yU)
+**Live Demo:** Runs locally (see Deployment Guide)
 
 ### Why SYMBIONT-X Wins
 
